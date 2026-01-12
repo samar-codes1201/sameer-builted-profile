@@ -41,8 +41,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
-            /* CHANGED: Removed sticky positioning */
-            position: relative; 
+            position: relative; /* Not sticky as requested */
             z-index: 1000;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
@@ -86,6 +85,7 @@
             text-transform: uppercase;
         }
 
+        /* Standard Print Button (Desktop) */
         .print-btn {
             background: var(--text-main);
             color: white;
@@ -255,16 +255,22 @@
             grid-template-columns: 3fr 1fr;
             gap: 20px;
         }
+.chart-card {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    height: 350px;
+    position: relative;
+}
 
-        .chart-card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            height: 350px;
-            position: relative;
-        }
+@media (max-width: 850px) {
+    .chart-card {
+        height: 400px; /* More space on mobile to prevent overlap */
+        margin-bottom: 20px; /* Extra gap before stats card */
+    }
+}
         
         .chart-card canvas {
             max-width: 100%;
@@ -312,7 +318,6 @@
 
         .table-container {
             padding: 0 40px 60px 40px;
-            /* Added for responsiveness */
             overflow-x: auto; 
             -webkit-overflow-scrolling: touch;
         }
@@ -1216,36 +1221,215 @@
             { id: 1, name: "Shahjahanabad C.G.H.S.", loc: "Sec-11, Dwarka", client: "Society / Purvanchal", val: "67.43 Lac", rawVal: 67.43, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" }
         ];
 
-        // --- CUSTOM PLUGIN FOR DATA LABELS ---
-        const customDataLabels = {
-            id: 'customDataLabels',
-            afterDatasetsDraw(chart) {
-                const { ctx } = chart;
-                // CHECK SCREEN WIDTH FOR RESPONSIVE FONT SIZE
-                const isMobile = window.innerWidth < 600;
-                
-                chart.data.datasets.forEach((dataset, i) => {
-                    const meta = chart.getDatasetMeta(i);
-                    meta.data.forEach((element, index) => {
-                        const value = dataset.data[index];
-                        
-                        ctx.save();
-                        // DYNAMIC FONT SIZE
-                        ctx.font = isMobile ? 'bold 9px "Inter", sans-serif' : 'bold 11px "Inter", sans-serif';
-                        ctx.fillStyle = '#004d00'; // Green text
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-                        
-                        // Draw text slightly above the point (y - 10px)
-                        // If value is very low (prevent overlap with bottom), shift up slightly more
-                        const yPos = value < 1 ? element.y - 12 : element.y - 8;
-                        
-                        ctx.fillText(`₹${value} Cr`, element.x, yPos);
-                        ctx.restore();
-                    });
-                });
+        // --- HELPER: Client Normalization (Grouping) ---
+        function getClientGroup(clientRaw) {
+            const c = clientRaw.toLowerCase();
+            if(c.includes('amrapali')) return "Amrapali Group";
+            if(c.includes('purvanchal')) return "Purvanchal Group";
+            if(c.includes('gardenia')) return "Gardenia Group";
+            if(c.includes('samiah')) return "Samiah International";
+            if(c.includes('nirala')) return "Nirala Developers";
+            if(c.includes('ultra home')) return "Ultra Home Construction";
+            if(c.includes('gaursons') || c.includes('jaishnavi')) return "Gaursons / Jaishnavi";
+            if(c.includes('cpwd')) return "CPWD / Gov";
+            if(c.includes('supertech')) return "Supertech";
+            return "Others";
+        }
+
+        // --- FILTER & RENDER LOGIC ---
+        function populateClients() {
+            const select = document.getElementById('clientFilter');
+            const groups = [...new Set(projectsData.map(p => getClientGroup(p.client)))].sort();
+            
+            groups.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.textContent = g;
+                select.appendChild(opt);
+            });
+        }
+
+        function filterProjects() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const clientGroup = document.getElementById('clientFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            let filtered = projectsData.filter(p => {
+                const searchMatch = p.name.toLowerCase().includes(search) 
+                                 || p.loc.toLowerCase().includes(search)
+                                 || (p.contact && p.contact.toLowerCase().includes(search));
+                                 
+                const groupMatch = clientGroup ? getClientGroup(p.client) === clientGroup : true;
+                const statusMatch = status ? (status === 'Completed' ? p.status === 'Completed' : p.status !== 'Completed') : true;
+                return searchMatch && groupMatch && statusMatch;
+            });
+
+            if (sort === 'val-desc') filtered.sort((a, b) => b.rawVal - a.rawVal);
+            else if (sort === 'val-asc') filtered.sort((a, b) => a.rawVal - b.rawVal);
+            else if (sort === 'id-asc') filtered.sort((a, b) => a.id - b.id);
+            else filtered.sort((a, b) => b.id - a.id);
+
+            renderTable(filtered);
+            updateStats(filtered);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
             }
-        };
+            emptyState.style.display = 'none';
+
+            data.forEach(p => {
+                const isCompleted = p.status === 'Completed';
+                const statusClass = isCompleted ? 'status-completed' : 'status-ongoing';
+                
+                // Format Contact Info
+                let contactHtml = '<span style="color:#aaa">-</span>';
+                if(p.contact) {
+                    const lines = p.contact.split('\n');
+                    contactHtml = `<div class="contact-info">
+                        <strong>${lines[0] || ''}</strong>
+                        ${lines[1] ? `<span class="contact-phone"><i data-lucide="phone" width="10"></i> ${lines[1]}</span>` : ''}
+                    </div>`;
+                }
+
+                // Logic for Logo
+                const clientGroup = getClientGroup(p.client);
+                const logoUrl = clientLogos[clientGroup];
+                const logoHtml = logoUrl 
+                    ? `<img src="${logoUrl}" class="client-logo" alt="${clientGroup}">` 
+                    : '';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#888;">${p.id}</td>
+                    <td>
+                        <span class="p-name">${p.name}</span>
+                        <span class="p-loc"><i data-lucide="map-pin" width="12"></i> ${p.loc}</span>
+                    </td>
+                    <td>
+                        <div class="client-cell">
+                            ${logoHtml}
+                            <div class="client-info">
+                                <span class="p-client-name">${p.client}</span>
+                                <span class="p-client-group">${clientGroup}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${contactHtml}</td>
+                    <td class="p-val">${p.val}</td>
+                    <td><span class="status-badge ${statusClass}">${p.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Safer icon creation
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+
+        function updateStats(data) {
+            document.getElementById('totalCount').innerText = data.length;
+            const totalLacs = data.reduce((sum, p) => sum + p.rawVal, 0);
+            const valDisplay = totalLacs > 100 
+                ? `₹ ${(totalLacs/100).toFixed(2)} Cr` 
+                : `₹ ${totalLacs.toFixed(2)} Lacs`;
+            document.getElementById('totalValue').innerText = valDisplay;
+        }
+
+        // --- MERGED REVENUE DATA (2012 - 2023) ---
+        const revenueData = [
+            { year: '2012-13', val: 17.33 },
+            { year: '2013-14', val: 17.53 },
+            { year: '2014-15', val: 9.44 },
+            { year: '2015-16', val: 4.60 },
+            { year: '2016-17', val: 0.77 },
+            { year: '2017-18', val: 1.50 },
+            { year: '2018-19', val: 0.21 },
+            { year: '2019-20', val: 0.20 },
+            { year: '2020-21', val: 6.26 },
+            { year: '2021-22', val: 8.59 },
+            { year: '2022-23', val: 12.85 }
+        ];
+// --- CUSTOM PLUGIN FOR DATA LABELS ---
+const customDataLabels = {
+    id: 'customDataLabels',
+    afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const isMobile = window.innerWidth < 600;
+        
+        chart.data.datasets.forEach((dataset, i) => {
+            const meta = chart.getDatasetMeta(i);
+            meta.data.forEach((element, index) => {
+                const value = dataset.data[index];
+                
+                ctx.save();
+                
+                // MOBILE: White background pill for labels
+                if (isMobile) {
+                    const text = `₹${value}`;
+                    ctx.font = 'bold 8px "Inter", sans-serif';
+                    const textWidth = ctx.measureText(text).width;
+                    const padding = 4;
+                    const boxWidth = textWidth + (padding * 2);
+                    const boxHeight = 14;
+                    const yPos = element.y - 18;
+                    
+                    // Draw white rounded rectangle background
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+                    ctx.shadowBlur = 4;
+                    ctx.shadowOffsetY = 2;
+                    
+                    const x = element.x - (boxWidth / 2);
+                    const y = yPos - boxHeight + 2;
+                    const radius = 6;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x + radius, y);
+                    ctx.lineTo(x + boxWidth - radius, y);
+                    ctx.quadraticCurveTo(x + boxWidth, y, x + boxWidth, y + radius);
+                    ctx.lineTo(x + boxWidth, y + boxHeight - radius);
+                    ctx.quadraticCurveTo(x + boxWidth, y + boxHeight, x + boxWidth - radius, y + boxHeight);
+                    ctx.lineTo(x + radius, y + boxHeight);
+                    ctx.quadraticCurveTo(x, y + boxHeight, x, y + boxHeight - radius);
+                    ctx.lineTo(x, y + radius);
+                    ctx.quadraticCurveTo(x, y, x + radius, y);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    // Reset shadow
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    // Draw text
+                    ctx.fillStyle = '#004d00';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(text, element.x, yPos - (boxHeight / 2) + 2);
+                } else {
+                    // DESKTOP: Simple text labels
+                    ctx.font = 'bold 11px "Inter", sans-serif';
+                    ctx.fillStyle = '#004d00';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    const yPos = value < 1 ? element.y - 12 : element.y - 8;
+                    ctx.fillText(`₹${value} Cr`, element.x, yPos);
+                }
+                
+                ctx.restore();
+            });
+        });
+    }
+};
 
         // --- RENDER CHART FUNCTION ---
         function renderChart(data) {
@@ -1254,54 +1438,53 @@
 
             const ctx = document.getElementById('growthChart').getContext('2d');
 
-            // Check and destroy existing chart to prevent canvas overlay issues
+            // Check if Chart.js loaded
+            if (typeof Chart === 'undefined') {
+                console.error("Chart.js failed to load");
+                return;
+            }
+
+            // Check and destroy existing chart
             if (window.myGrowthChart) window.myGrowthChart.destroy();
 
-            window.myGrowthChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        label: 'Annual Turnover (in Crores ₹)',
-                        data: chartValues,
-                        borderColor: '#004d00',        // Sameer Green Line
-                        backgroundColor: 'rgba(0, 77, 0, 0.1)', // Light Green Fill
-                        pointBackgroundColor: '#FFD700', // Gold Points
-                        pointBorderColor: '#004d00',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,                
-                        pointHoverRadius: 7,
-                        tension: 0.3,                  // Smooth curve
-                        fill: true                     // Fill area under line
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: { top: 30, right: 20, left: 10, bottom: 10 }
-                    },
-                    plugins: {
-                        legend: { display: false }, // Hide legend, title is sufficient
-                        tooltip: { enabled: false }, // Disable tooltip, we use permanent labels
-                        title: {
-                            display: true,
-                            text: 'Financial Growth Trajectory (2012-2023)',
-                            font: { size: 16, family: "'Outfit', sans-serif", weight: 'bold' },
-                            color: '#004d00',
-                            padding: { bottom: 20 }
-                        }
-                    },
+            // Mobile detection for config
+            const isMobile = window.innerWidth < 600;
+
+window.myGrowthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: chartLabels,
+        datasets: [{
+            label: 'Annual Turnover (in Crores ₹)',
+            data: chartValues,
+            borderColor: '#004d00',        
+            backgroundColor: 'rgba(0, 77, 0, 0.1)', 
+            pointBackgroundColor: '#FFD700', 
+            pointBorderColor: '#004d00',
+            pointBorderWidth: 2,
+            pointRadius: isMobile ? 3 : 5,               
+            pointHoverRadius: 7,
+            tension: 0.3,                  
+            fill: true                     
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+            padding: { top: isMobile ? 35 : 30, right: 20, left: 10, bottom: isMobile ? 25 : 10 }  // ← CHANGE THIS LINE
+        },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#f0f0f0' }, // Subtle grid
-                            title: { display: true, text: 'Turnover (₹ Crores)', color: '#64748b' },
-                            ticks: { display: false } // Hide Y-axis numbers as we have labels on points
+                            grid: { color: '#f0f0f0' }, 
+                            title: { display: !isMobile, text: 'Turnover (₹ Crores)', color: '#64748b' },
+                            ticks: { display: false } 
                         },
                         x: {
-                            grid: { display: false }, // Clean look
+                            grid: { display: false }, 
                             ticks: { 
+                                display: !isMobile, // Hide years on mobile to prevent cramping
                                 font: { family: "'Inter', sans-serif", size: 11 },
                                 maxRotation: 45,
                                 minRotation: 0
@@ -1309,13 +1492,17 @@
                         }
                     }
                 },
-                plugins: [customDataLabels] // Register the custom label plugin
+                plugins: [customDataLabels] 
             });
         }
 
         // --- INIT ---
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
+            // Safe Lucide init
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+            
             populateClients();
             renderTable(projectsData);
             updateStats(projectsData);
