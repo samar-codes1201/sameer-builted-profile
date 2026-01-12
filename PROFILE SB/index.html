@@ -41,8 +41,8 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
+            /* CHANGED: Removed sticky positioning */
+            position: relative; 
             z-index: 1000;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
@@ -683,9 +683,39 @@
                 align-items: center;
             }
             .header-center { margin: 15px 0; }
+            
+            /* TRANSFORM PRINT BUTTON TO FLOATING BUBBLE */
             .print-btn {
-                width: 100%;
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                padding: 0;
+                display: flex;
                 justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                z-index: 2000;
+                background: var(--primary); /* Green background */
+                color: white;
+                border: 2px solid white; /* Adds a nice pop */
+            }
+            
+            .print-btn:hover {
+                background: var(--primary-dark);
+                transform: scale(1.05);
+            }
+
+            .print-btn .btn-text {
+                display: none; /* Hide text */
+            }
+
+            .print-btn i {
+                /* Ensure icon is visible and sized */
+                width: 24px;
+                height: 24px;
             }
 
             /* About Section */
@@ -742,7 +772,7 @@
 
     <div class="header-right">
         <button class="print-btn" onclick="window.print()">
-            <i data-lucide="printer" width="18"></i> Print Report
+            <i data-lucide="printer" width="18"></i> <span class="btn-text">Print Report</span>
         </button>
     </div>
 </header>
@@ -1186,152 +1216,22 @@
             { id: 1, name: "Shahjahanabad C.G.H.S.", loc: "Sec-11, Dwarka", client: "Society / Purvanchal", val: "67.43 Lac", rawVal: 67.43, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" }
         ];
 
-        // --- HELPER: Client Normalization (Grouping) ---
-        function getClientGroup(clientRaw) {
-            const c = clientRaw.toLowerCase();
-            if(c.includes('amrapali')) return "Amrapali Group";
-            if(c.includes('purvanchal')) return "Purvanchal Group";
-            if(c.includes('gardenia')) return "Gardenia Group";
-            if(c.includes('samiah')) return "Samiah International";
-            if(c.includes('nirala')) return "Nirala Developers";
-            if(c.includes('ultra home')) return "Ultra Home Construction";
-            if(c.includes('gaursons') || c.includes('jaishnavi')) return "Gaursons / Jaishnavi";
-            if(c.includes('cpwd')) return "CPWD / Gov";
-            if(c.includes('supertech')) return "Supertech";
-            return "Others";
-        }
-
-        // --- FILTER & RENDER LOGIC ---
-        function populateClients() {
-            const select = document.getElementById('clientFilter');
-            const groups = [...new Set(projectsData.map(p => getClientGroup(p.client)))].sort();
-            
-            groups.forEach(g => {
-                const opt = document.createElement('option');
-                opt.value = g;
-                opt.textContent = g;
-                select.appendChild(opt);
-            });
-        }
-
-        function filterProjects() {
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const clientGroup = document.getElementById('clientFilter').value;
-            const status = document.getElementById('statusFilter').value;
-            const sort = document.getElementById('sortFilter').value;
-
-            let filtered = projectsData.filter(p => {
-                const searchMatch = p.name.toLowerCase().includes(search) 
-                                 || p.loc.toLowerCase().includes(search)
-                                 || (p.contact && p.contact.toLowerCase().includes(search));
-                                 
-                const groupMatch = clientGroup ? getClientGroup(p.client) === clientGroup : true;
-                const statusMatch = status ? (status === 'Completed' ? p.status === 'Completed' : p.status !== 'Completed') : true;
-                return searchMatch && groupMatch && statusMatch;
-            });
-
-            if (sort === 'val-desc') filtered.sort((a, b) => b.rawVal - a.rawVal);
-            else if (sort === 'val-asc') filtered.sort((a, b) => a.rawVal - b.rawVal);
-            else if (sort === 'id-asc') filtered.sort((a, b) => a.id - b.id);
-            else filtered.sort((a, b) => b.id - a.id);
-
-            renderTable(filtered);
-            updateStats(filtered);
-        }
-
-        function renderTable(data) {
-            const tbody = document.getElementById('tableBody');
-            const emptyState = document.getElementById('emptyState');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                emptyState.style.display = 'block';
-                return;
-            }
-            emptyState.style.display = 'none';
-
-            data.forEach(p => {
-                const isCompleted = p.status === 'Completed';
-                const statusClass = isCompleted ? 'status-completed' : 'status-ongoing';
-                
-                // Format Contact Info
-                let contactHtml = '<span style="color:#aaa">-</span>';
-                if(p.contact) {
-                    const lines = p.contact.split('\n');
-                    contactHtml = `<div class="contact-info">
-                        <strong>${lines[0] || ''}</strong>
-                        ${lines[1] ? `<span class="contact-phone"><i data-lucide="phone" width="10"></i> ${lines[1]}</span>` : ''}
-                    </div>`;
-                }
-
-                // Logic for Logo
-                const clientGroup = getClientGroup(p.client);
-                const logoUrl = clientLogos[clientGroup];
-                const logoHtml = logoUrl 
-                    ? `<img src="${logoUrl}" class="client-logo" alt="${clientGroup}">` 
-                    : '';
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="color:#888;">${p.id}</td>
-                    <td>
-                        <span class="p-name">${p.name}</span>
-                        <span class="p-loc"><i data-lucide="map-pin" width="12"></i> ${p.loc}</span>
-                    </td>
-                    <td>
-                        <div class="client-cell">
-                            ${logoHtml}
-                            <div class="client-info">
-                                <span class="p-client-name">${p.client}</span>
-                                <span class="p-client-group">${clientGroup}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${contactHtml}</td>
-                    <td class="p-val">${p.val}</td>
-                    <td><span class="status-badge ${statusClass}">${p.status}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-            lucide.createIcons();
-        }
-
-        function updateStats(data) {
-            document.getElementById('totalCount').innerText = data.length;
-            const totalLacs = data.reduce((sum, p) => sum + p.rawVal, 0);
-            const valDisplay = totalLacs > 100 
-                ? `₹ ${(totalLacs/100).toFixed(2)} Cr` 
-                : `₹ ${totalLacs.toFixed(2)} Lacs`;
-            document.getElementById('totalValue').innerText = valDisplay;
-        }
-
-        // --- MERGED REVENUE DATA (2012 - 2023) ---
-        const revenueData = [
-            { year: '2012-13', val: 17.33 },
-            { year: '2013-14', val: 17.53 },
-            { year: '2014-15', val: 9.44 },
-            { year: '2015-16', val: 4.60 },
-            { year: '2016-17', val: 0.77 },
-            { year: '2017-18', val: 1.50 },
-            { year: '2018-19', val: 0.21 },
-            { year: '2019-20', val: 0.20 },
-            { year: '2020-21', val: 6.26 },
-            { year: '2021-22', val: 8.59 },
-            { year: '2022-23', val: 12.85 }
-        ];
-
         // --- CUSTOM PLUGIN FOR DATA LABELS ---
         const customDataLabels = {
             id: 'customDataLabels',
             afterDatasetsDraw(chart) {
                 const { ctx } = chart;
+                // CHECK SCREEN WIDTH FOR RESPONSIVE FONT SIZE
+                const isMobile = window.innerWidth < 600;
+                
                 chart.data.datasets.forEach((dataset, i) => {
                     const meta = chart.getDatasetMeta(i);
                     meta.data.forEach((element, index) => {
                         const value = dataset.data[index];
                         
                         ctx.save();
-                        ctx.font = 'bold 11px "Inter", sans-serif';
+                        // DYNAMIC FONT SIZE
+                        ctx.font = isMobile ? 'bold 9px "Inter", sans-serif' : 'bold 11px "Inter", sans-serif';
                         ctx.fillStyle = '#004d00'; // Green text
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'bottom';
