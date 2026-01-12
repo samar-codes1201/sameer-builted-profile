@@ -9,71 +9,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* --- FOOTER STYLES --- */
-    .site-footer {
-        background-color: #002b00; /* Dark Green */
-        color: white;
-        padding: 60px 40px 20px;
-        font-family: 'Inter', sans-serif;
-        margin-top: 60px;
-    }
-
-    .footer-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        padding-bottom: 40px;
-    }
-
-    .footer-col h4 {
-        font-family: 'Outfit', sans-serif;
-        color: #fff;
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-    }
-
-    .footer-col p {
-        color: rgba(255,255,255,0.7);
-        font-size: 0.9rem;
-        line-height: 1.6;
-        margin-bottom: 10px;
-    }
-
-    /* Compliance Badges for GST/PAN */
-    .compliance-box {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-
-    .compliance-label {
-        display: block;
-        font-size: 0.75rem;
-        color: #86efac; /* Light Green */
-        margin-bottom: 4px;
-        text-transform: uppercase;
-        font-weight: 600;
-    }
-
-    .compliance-value {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1rem;
-        letter-spacing: 0.05em;
-    }
-
-    .footer-bottom {
-        text-align: center;
-        padding-top: 20px;
-        font-size: 0.85rem;
-        color: rgba(255,255,255,0.4);
-    }
         :root {
             /* Branding Colors */
             --primary: #004d00;
@@ -108,8 +43,32 @@
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 1000; /* High Z-Index to stay on top */
+            z-index: 1000;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-center {
+            flex: 0 0 auto;
+            text-align: center;
+            margin: 0 20px;
+        }
+        
+        .header-center img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .header-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .brand-section h1 {
@@ -139,23 +98,25 @@
             align-items: center;
             gap: 8px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
-        .director-photo {
-        width: 120px;          /* Size of the image */
-        height: 120px;         
-        object-fit: cover;     /* Ensures image doesn't stretch */
-        border-radius: 50%;    /* Makes it a perfect circle */
-        border: 4px solid rgba(255, 255, 255, 0.2); /* Semi-transparent border */
-        margin-bottom: 15px;   /* Space below the image */
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
         .print-btn:hover { background: black; }
 
-        /* --- ABOUT US SECTION (Inserted) --- */
+        .director-photo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- ABOUT US SECTION --- */
         .about-section {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(to bottom, #ffffff, #f1f5f9);
@@ -304,6 +265,10 @@
             height: 350px;
             position: relative;
         }
+        
+        .chart-card canvas {
+            max-width: 100%;
+        }
 
         .stats-card {
             background: var(--primary);
@@ -347,6 +312,9 @@
 
         .table-container {
             padding: 0 40px 60px 40px;
+            /* Added for responsiveness */
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch;
         }
 
         .projects-table {
@@ -354,9 +322,9 @@
             background: var(--white);
             border-radius: 12px;
             border-collapse: collapse;
-            overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid var(--border);
+            min-width: 800px; /* Ensures table doesn't squash on mobile */
         }
 
         .projects-table th {
@@ -402,32 +370,363 @@
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
+            white-space: nowrap;
         }
         .status-completed { background: #dcfce7; color: #166534; }
         .status-ongoing { background: #fff7ed; color: #9a3412; }
         
         .empty-state { text-align: center; padding: 40px; color: var(--text-light); font-style: italic; }
 
+        /* --- FOOTER STYLES --- */
+        .site-footer {
+            background-color: #002b00; /* Dark Green */
+            color: white;
+            padding: 60px 40px 20px;
+            font-family: 'Inter', sans-serif;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .footer-col p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Compliance Badges for GST/PAN */
+        .compliance-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .compliance-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #86efac; /* Light Green */
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .compliance-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* --- VISION SECTION STYLES --- */
+        .vision-section {
+            background-color: #002b00; /* Deep Green Brand Color */
+            color: white;
+            padding: 80px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.6;
+        }
+
+        .vision-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .vm-card { padding: 20px; }
+
+        .vm-icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fbbf24;
+        }
+
+        .vm-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: -0.01em;
+        }
+
+        .vm-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+            border-left: 3px solid #fbbf24;
+            padding-left: 20px;
+        }
+
+        .vm-divider {
+            display: none;
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 40px 0;
+        }
+
+        /* --- TEAM SECTION STYLES --- */
+        .team-section {
+            padding: 80px 40px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .team-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .team-subtitle {
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .directors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+        }
+
+        .director-card {
+            background: linear-gradient(135deg, #004d00 0%, #003300 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px -5px rgba(0, 77, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .director-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+        }
+
+        .director-role {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .director-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .staff-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-3px);
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-color: var(--primary);
+        }
+
+        .staff-icon {
+            width: 40px;
+            height: 40px;
+            background: #e6fffa;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .staff-info h5 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .staff-info span {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 40px 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .section-divider::before, .section-divider::after {
+            content: '';
+            height: 1px;
+            background: var(--border);
+            width: 100px;
+            margin: 0 15px;
+        }
+
+        /* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
         @media (max-width: 1024px) {
             .dashboard { grid-template-columns: 1fr; height: auto; }
             .content-split { grid-template-columns: 1fr; gap: 40px; }
             .about-title { font-size: 2.2rem; }
             .controls-bar { grid-template-columns: 1fr 1fr; }
         }
-        @media (max-width: 768px) {
-            .controls-bar { grid-template-columns: 1fr; }
-            header { flex-direction: column; gap: 15px; align-items: flex-start; }
-            .table-container { padding: 0 15px 30px; }
-            .projects-table th, .projects-table td { padding: 10px; }
-            .client-cell { flex-direction: column; align-items: flex-start; gap: 5px; }
+
+        @media (max-width: 850px) {
+            /* Header Stack */
+            header {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                text-align: center;
+            }
+            .header-left, .header-center, .header-right {
+                flex: auto;
+                width: 100%;
+                justify-content: center;
+                margin: 0;
+                align-items: center;
+            }
+            .header-center { margin: 15px 0; }
+            .print-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* About Section */
+            .about-section { padding: 40px 20px; }
+            .about-title { font-size: 2rem; }
+            .check-list { grid-template-columns: 1fr; }
+
+            /* Vision Section */
+            .vision-container { grid-template-columns: 1fr; gap: 0; }
+            .vm-divider { display: block; }
+            .vision-section { padding: 40px 20px; }
+
+            /* Stats */
+            .stats-card { flex-direction: row; align-items: center; justify-content: space-between; }
+            .stats-card > div { flex: 1; text-align: center; }
+            .stats-card .stat-item h2 { font-size: 1.8rem; }
+            
+            /* Team Section */
+            .team-section { padding: 40px 20px; }
+            .team-title { font-size: 2rem; }
+            .directors-grid { grid-template-columns: 1fr; }
+            .staff-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); }
+            
+            /* Controls */
+            .controls-bar { grid-template-columns: 1fr; padding: 0 20px; }
+            .table-container { padding: 0 20px 40px 20px; }
+            .dashboard { padding: 20px; }
+        }
+        
+        @media (max-width: 480px) {
+            .header-center img { width: 250px; }
+            .brand-section h1 { font-size: 1.3rem; }
+            .about-title { font-size: 1.8rem; }
+            .stats-card { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<header style="display: flex; align-items: center; justify-content: space-between; padding: 20px 40px;">
-    
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+<header>
+    <div class="header-left">
         <h1 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 2rem; color: var(--primary); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;">
             SAMEER BUILTAID (P) LTD.
         </h1>
@@ -436,17 +735,16 @@
         </span>
     </div>
 
-    <div style="flex: 0 0 auto; text-align: center; margin: 0 20px;">
+    <div class="header-center">
         <img src="icon/sameerbuiltaid.png" alt="Sameer Builtaid Logo" 
-             style="width: 350px; height: auto; object-fit: contain;">
+             style="width: 350px;">
     </div>
 
-    <div style="flex: 1; display: flex; justify-content: flex-end;">
+    <div class="header-right">
         <button class="print-btn" onclick="window.print()">
             <i data-lucide="printer" width="18"></i> Print Report
         </button>
     </div>
-
 </header>
 
     <section class="about-section" id="about">
@@ -502,85 +800,6 @@
             </div>
         </div>
     </section>
-    <style>
-    .vision-section {
-        background-color: #002b00; /* Deep Green Brand Color */
-        color: white;
-        padding: 80px 40px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Background Pattern Effect */
-    .vision-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        background-size: 30px 30px;
-        opacity: 0.6;
-    }
-
-    .vision-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
-        align-items: center;
-    }
-
-    .vm-card {
-        padding: 20px;
-    }
-
-    .vm-icon-box {
-        width: 60px;
-        height: 60px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 25px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: #fbbf24; /* Gold accent */
-    }
-
-    .vm-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-        letter-spacing: -0.01em;
-    }
-
-    .vm-text {
-        font-size: 1rem;
-        line-height: 1.7;
-        color: rgba(255, 255, 255, 0.8);
-        border-left: 3px solid #fbbf24; /* Gold accent line */
-        padding-left: 20px;
-    }
-
-    /* Divider for mobile/responsive */
-    .vm-divider {
-        display: none;
-        height: 1px;
-        background: rgba(255,255,255,0.1);
-        margin: 40px 0;
-    }
-
-    @media (max-width: 768px) {
-        .vision-container { grid-template-columns: 1fr; gap: 0; }
-        .vm-divider { display: block; }
-    }
-</style>
 
 <section class="vision-section">
     <div class="vision-container">
@@ -609,6 +828,7 @@
 
     </div>
 </section>
+
     <div class="dashboard">
         <div class="chart-card">
             <h3 style="margin-bottom: 15px; font-family:'Outfit'; font-weight:500;">Cumulative Project Value Growth (Chronological)</h3>
@@ -666,159 +886,6 @@
             No projects found matching your criteria.
         </div>
     </div>
-<style>
-    .team-section {
-        padding: 80px 40px;
-        background: #fff;
-        border-top: 1px solid var(--border);
-    }
-
-    .team-header {
-        text-align: center;
-        margin-bottom: 60px;
-    }
-
-    .team-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--primary);
-        margin-bottom: 15px;
-    }
-
-    .team-subtitle {
-        color: var(--text-light);
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    /* Directors Section */
-    .directors-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-        max-width: 800px;
-        margin: 0 auto 60px auto;
-    }
-
-    .director-card {
-        background: linear-gradient(135deg, #004d00 0%, #003300 100%);
-        color: white;
-        padding: 30px;
-        border-radius: 16px;
-        text-align: center;
-        box-shadow: 0 10px 30px -5px rgba(0, 77, 0, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .director-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        transform: rotate(45deg);
-    }
-
-    .director-role {
-        display: inline-block;
-        background: rgba(255,255,255,0.2);
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-        backdrop-filter: blur(5px);
-    }
-
-    .director-name {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    /* Staff Grid */
-    .staff-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .staff-card {
-        background: var(--bg);
-        border: 1px solid var(--border);
-        padding: 20px;
-        border-radius: 12px;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .staff-card:hover {
-        transform: translateY(-3px);
-        background: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        border-color: var(--primary);
-    }
-
-    .staff-icon {
-        width: 40px;
-        height: 40px;
-        background: #e6fffa;
-        color: var(--primary);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .staff-info h5 {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1rem;
-        color: var(--text-main);
-        margin-bottom: 2px;
-    }
-
-    .staff-info span {
-        font-size: 0.8rem;
-        color: var(--text-light);
-        text-transform: uppercase;
-        font-weight: 500;
-    }
-    
-    .section-divider {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 40px 0;
-        color: var(--text-light);
-        font-size: 0.9rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-    }
-    .section-divider::before, .section-divider::after {
-        content: '';
-        height: 1px;
-        background: var(--border);
-        width: 100px;
-        margin: 0 15px;
-    }
-
-    @media (max-width: 768px) {
-        .directors-grid { grid-template-columns: 1fr; }
-        .staff-grid { grid-template-columns: 1fr; }
-    }
-</style>
 
 <section class="team-section">
     <div class="team-header">
@@ -1037,9 +1104,7 @@
     </div>
 </section>
     <script>
-        // --- LOGO LIBRARY ---
-        // PASTE YOUR URLS HERE.
-   // --- LOGO LIBRARY (UPDATED FOR LOCAL FOLDER) ---
+        // --- LOGO LIBRARY (UPDATED FOR LOCAL FOLDER) ---
         // Make sure your folder is named "icon" and images match these filenames exactly.
         const clientLogos = {
             "Amrapali Group": "icon/amrapali_group.png", 
@@ -1120,78 +1185,6 @@
             { id: 2, name: "PM Office Emp S.A.S.", loc: "Sec-62, Noida", client: "Purvanchal Construction", val: "10.80 Lac", rawVal: 10.8, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
             { id: 1, name: "Shahjahanabad C.G.H.S.", loc: "Sec-11, Dwarka", client: "Society / Purvanchal", val: "67.43 Lac", rawVal: 67.43, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" }
         ];
-
-        // --- INIT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            populateClients();
-            renderTable(projectsData);
-            updateStats(projectsData);
-            renderChart(projectsData);
-        });
-
-        // --- CHART LOGIC ---
-        function renderChart(data) {
-            const sorted = [...data].sort((a, b) => a.id - b.id);
-            let cumulative = 0;
-            const chartLabels = [];
-            const chartData = sorted.map(p => {
-                cumulative += p.rawVal;
-                chartLabels.push(`Proj ${p.id}`);
-                return cumulative;
-            });
-
-            const ctx = document.getElementById('growthChart').getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(0, 77, 0, 0.2)');
-            gradient.addColorStop(1, 'rgba(0, 77, 0, 0)');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                        label: 'Cumulative Work Value (Lacs)',
-                        data: chartData,
-                        borderColor: '#004d00',
-                        backgroundColor: gradient,
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        pointHoverRadius: 6,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let val = context.raw;
-                                    if(val > 100) return `Total: ₹ ${(val/100).toFixed(2)} Cr`;
-                                    return `Total: ₹ ${val.toFixed(2)} Lacs`;
-                                },
-                                title: function(context) {
-                                    const index = context[0].dataIndex;
-                                    return sorted[index].name;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#f0f0f0' },
-                            ticks: { callback: (val) => (val/100) + ' Cr' }
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        }
 
         // --- HELPER: Client Normalization (Grouping) ---
         function getClientGroup(clientRaw) {
@@ -1311,130 +1304,124 @@
                 : `₹ ${totalLacs.toFixed(2)} Lacs`;
             document.getElementById('totalValue').innerText = valDisplay;
         }
-    </script>
-    <script>
-    // --- MERGED REVENUE DATA (2012 - 2023) ---
-    const revenueData = [
-        { year: '2012-13', val: 17.33 },
-        { year: '2013-14', val: 17.53 },
-        { year: '2014-15', val: 9.44 },
-        { year: '2015-16', val: 4.60 },
-        { year: '2016-17', val: 0.77 },
-        { year: '2017-18', val: 1.50 },
-        { year: '2018-19', val: 0.21 },
-        { year: '2019-20', val: 0.20 },
-        { year: '2020-21', val: 6.26 },
-        { year: '2021-22', val: 8.59 },
-        { year: '2022-23', val: 12.85 }
-    ];
 
-    // --- CUSTOM PLUGIN FOR DATA LABELS ---
-    const customDataLabels = {
-        id: 'customDataLabels',
-        afterDatasetsDraw(chart) {
-            const { ctx } = chart;
-            chart.data.datasets.forEach((dataset, i) => {
-                const meta = chart.getDatasetMeta(i);
-                meta.data.forEach((element, index) => {
-                    const value = dataset.data[index];
-                    
-                    ctx.save();
-                    ctx.font = 'bold 11px "Inter", sans-serif';
-                    ctx.fillStyle = '#004d00'; // Green text
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'bottom';
-                    
-                    // Draw text slightly above the point (y - 10px)
-                    // If value is very low (prevent overlap with bottom), shift up slightly more
-                    const yPos = value < 1 ? element.y - 12 : element.y - 8;
-                    
-                    ctx.fillText(`₹${value} Cr`, element.x, yPos);
-                    ctx.restore();
+        // --- MERGED REVENUE DATA (2012 - 2023) ---
+        const revenueData = [
+            { year: '2012-13', val: 17.33 },
+            { year: '2013-14', val: 17.53 },
+            { year: '2014-15', val: 9.44 },
+            { year: '2015-16', val: 4.60 },
+            { year: '2016-17', val: 0.77 },
+            { year: '2017-18', val: 1.50 },
+            { year: '2018-19', val: 0.21 },
+            { year: '2019-20', val: 0.20 },
+            { year: '2020-21', val: 6.26 },
+            { year: '2021-22', val: 8.59 },
+            { year: '2022-23', val: 12.85 }
+        ];
+
+        // --- CUSTOM PLUGIN FOR DATA LABELS ---
+        const customDataLabels = {
+            id: 'customDataLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index];
+                        
+                        ctx.save();
+                        ctx.font = 'bold 11px "Inter", sans-serif';
+                        ctx.fillStyle = '#004d00'; // Green text
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        
+                        // Draw text slightly above the point (y - 10px)
+                        // If value is very low (prevent overlap with bottom), shift up slightly more
+                        const yPos = value < 1 ? element.y - 12 : element.y - 8;
+                        
+                        ctx.fillText(`₹${value} Cr`, element.x, yPos);
+                        ctx.restore();
+                    });
                 });
-            });
-        }
-    };
+            }
+        };
 
-    // --- RENDER CHART FUNCTION ---
-    function renderChart(data) {
-        const chartLabels = revenueData.map(d => d.year);
-        const chartValues = revenueData.map(d => d.val);
+        // --- RENDER CHART FUNCTION ---
+        function renderChart(data) {
+            const chartLabels = revenueData.map(d => d.year);
+            const chartValues = revenueData.map(d => d.val);
 
-        const ctx = document.getElementById('growthChart').getContext('2d');
+            const ctx = document.getElementById('growthChart').getContext('2d');
 
-        // Check and destroy existing chart to prevent canvas overlay issues
-        if (window.myGrowthChart) window.myGrowthChart.destroy();
+            // Check and destroy existing chart to prevent canvas overlay issues
+            if (window.myGrowthChart) window.myGrowthChart.destroy();
 
-        window.myGrowthChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: chartLabels,
-                datasets: [{
-                    label: 'Annual Turnover (in Crores ₹)',
-                    data: chartValues,
-                    borderColor: '#004d00',        // Sameer Green Line
-                    backgroundColor: 'rgba(0, 77, 0, 0.1)', // Light Green Fill
-                    pointBackgroundColor: '#FFD700', // Gold Points
-                    pointBorderColor: '#004d00',
-                    pointBorderWidth: 2,
-                    pointRadius: 5,                
-                    pointHoverRadius: 7,
-                    tension: 0.3,                  // Smooth curve
-                    fill: true                     // Fill area under line
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: { top: 30, right: 20, left: 10, bottom: 10 }
+            window.myGrowthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Annual Turnover (in Crores ₹)',
+                        data: chartValues,
+                        borderColor: '#004d00',        // Sameer Green Line
+                        backgroundColor: 'rgba(0, 77, 0, 0.1)', // Light Green Fill
+                        pointBackgroundColor: '#FFD700', // Gold Points
+                        pointBorderColor: '#004d00',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,                
+                        pointHoverRadius: 7,
+                        tension: 0.3,                  // Smooth curve
+                        fill: true                     // Fill area under line
+                    }]
                 },
-                plugins: {
-                    legend: { display: false }, // Hide legend, title is sufficient
-                    tooltip: { enabled: false }, // Disable tooltip, we use permanent labels
-                    title: {
-                        display: true,
-                        text: 'Financial Growth Trajectory (2012-2023)',
-                        font: { size: 16, family: "'Outfit', sans-serif", weight: 'bold' },
-                        color: '#004d00',
-                        padding: { bottom: 20 }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: '#f0f0f0' }, // Subtle grid
-                        title: { display: true, text: 'Turnover (₹ Crores)', color: '#64748b' },
-                        ticks: { display: false } // Hide Y-axis numbers as we have labels on points
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: { top: 30, right: 20, left: 10, bottom: 10 }
                     },
-                    x: {
-                        grid: { display: false }, // Clean look
-                        ticks: { 
-                            font: { family: "'Inter', sans-serif", size: 11 },
-                            maxRotation: 45,
-                            minRotation: 0
+                    plugins: {
+                        legend: { display: false }, // Hide legend, title is sufficient
+                        tooltip: { enabled: false }, // Disable tooltip, we use permanent labels
+                        title: {
+                            display: true,
+                            text: 'Financial Growth Trajectory (2012-2023)',
+                            font: { size: 16, family: "'Outfit', sans-serif", weight: 'bold' },
+                            color: '#004d00',
+                            padding: { bottom: 20 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f0f0f0' }, // Subtle grid
+                            title: { display: true, text: 'Turnover (₹ Crores)', color: '#64748b' },
+                            ticks: { display: false } // Hide Y-axis numbers as we have labels on points
+                        },
+                        x: {
+                            grid: { display: false }, // Clean look
+                            ticks: { 
+                                font: { family: "'Inter', sans-serif", size: 11 },
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
                         }
                     }
-                }
-            },
-            plugins: [customDataLabels] // Register the custom label plugin
-        });
-    }
+                },
+                plugins: [customDataLabels] // Register the custom label plugin
+            });
+        }
 
-    // --- INIT ---
-    document.addEventListener('DOMContentLoaded', () => {
-        lucide.createIcons();
-        
-        // Populate filters and tables from your existing projectsData logic
-        // (Ensure you keep the projectsData array and filter functions from the previous file)
-        populateClients();
-        renderTable(projectsData);
-        updateStats(projectsData);
-        
-        // Render the new Revenue Chart
-        renderChart(revenueData);
-    });
-</script>
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            populateClients();
+            renderTable(projectsData);
+            updateStats(projectsData);
+            renderChart(revenueData);
+        });
+    </script>
 <footer class="site-footer">
         <div class="footer-grid">
             
