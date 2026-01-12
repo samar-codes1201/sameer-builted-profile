@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Portfolio - Sameer Builtaid</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- FOOTER STYLES --- */
+    .site-footer {
+        background-color: #002b00; /* Dark Green */
+        color: white;
+        padding: 60px 40px 20px;
+        font-family: 'Inter', sans-serif;
+        margin-top: 60px;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 40px;
+    }
+
+    .footer-col h4 {
+        font-family: 'Outfit', sans-serif;
+        color: #fff;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .footer-col p {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    /* Compliance Badges for GST/PAN */
+    .compliance-box {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .compliance-label {
+        display: block;
+        font-size: 0.75rem;
+        color: #86efac; /* Light Green */
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .compliance-value {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.4);
+    }
+        :root {
+            /* Branding Colors */
+            --primary: #004d00;
+            --primary-dark: #002b00;
+            --sb-gold: #c2a356;
+            --accent: #e6fffa;
+            --text-main: #1a1a1a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--white);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* High Z-Index to stay on top */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-section h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-section span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .print-btn {
+            background: var(--text-main);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .director-photo {
+        width: 120px;          /* Size of the image */
+        height: 120px;         
+        object-fit: cover;     /* Ensures image doesn't stretch */
+        border-radius: 50%;    /* Makes it a perfect circle */
+        border: 4px solid rgba(255, 255, 255, 0.2); /* Semi-transparent border */
+        margin-bottom: 15px;   /* Space below the image */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+        .print-btn:hover { background: black; }
+
+        /* --- ABOUT US SECTION (Inserted) --- */
+        .about-section {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #ffffff, #f1f5f9);
+            padding: 60px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-badge {
+            display: inline-block;
+            background: #ecfdf5;
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            border: 1px solid #d1fae5;
+        }
+
+        .about-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .about-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .content-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: flex-start;
+        }
+
+        .about-details h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+
+        .about-details p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .check-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+        .check-list i { color: var(--sb-gold); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -5px rgba(0, 77, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            background: #f0fdf4;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .service-card h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .service-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* --- DASHBOARD & TABLE --- */
+        .dashboard {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            height: 350px;
+            position: relative;
+        }
+
+        .stats-card {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .stat-item label { opacity: 0.8; font-size: 0.85rem; text-transform: uppercase; }
+        .stat-item h2 { font-family: 'Outfit', sans-serif; font-size: 2.2rem; }
+
+        .controls-bar {
+            padding: 0 40px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: var(--white);
+            color: var(--text-main);
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+
+        .table-container {
+            padding: 0 40px 60px 40px;
+        }
+
+        .projects-table {
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            border-collapse: collapse;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .projects-table th {
+            background: #f1f5f9;
+            text-align: left;
+            padding: 15px 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .projects-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        .projects-table tr:last-child td { border-bottom: none; }
+        .projects-table tr:hover { background-color: #f8fafc; }
+
+        .p-name { font-weight: 600; color: var(--text-main); display: block; margin-bottom: 4px; }
+        .p-loc { font-size: 0.8rem; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+        
+        .client-cell { display: flex; align-items: center; gap: 12px; }
+        .client-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 4px; }
+        .client-info { display: flex; flex-direction: column; }
+        .p-client-name { font-size: 0.9rem; font-weight: 500; color: #334155; }
+        .p-client-group { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.03em;}
+
+        .p-val { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--primary); }
+        
+        .contact-info strong { display: block; font-size: 0.85rem; color: #334155; margin-bottom: 2px; }
+        .contact-phone { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-weight: 500; color: var(--text-main); font-size: 0.8rem; }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-completed { background: #dcfce7; color: #166534; }
+        .status-ongoing { background: #fff7ed; color: #9a3412; }
+        
+        .empty-state { text-align: center; padding: 40px; color: var(--text-light); font-style: italic; }
+
+        @media (max-width: 1024px) {
+            .dashboard { grid-template-columns: 1fr; height: auto; }
+            .content-split { grid-template-columns: 1fr; gap: 40px; }
+            .about-title { font-size: 2.2rem; }
+            .controls-bar { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .controls-bar { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; align-items: flex-start; }
+            .table-container { padding: 0 15px 30px; }
+            .projects-table th, .projects-table td { padding: 10px; }
+            .client-cell { flex-direction: column; align-items: flex-start; gap: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 20px 40px;">
+    
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+        <h1 style="margin: 0; font-family: 'Outfit', sans-serif; font-size: 2rem; color: var(--primary); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;">
+            SAMEER BUILTAID (P) LTD.
+        </h1>
+        <span style="font-size: 0.95rem; color: var(--text-light); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 5px;">
+            Project Portfolio & Analytics
+        </span>
+    </div>
+
+    <div style="flex: 0 0 auto; text-align: center; margin: 0 20px;">
+        <img src="icon/sameerbuiltaid.png" alt="Sameer Builtaid Logo" 
+             style="width: 350px; height: auto; object-fit: contain;">
+    </div>
+
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <button class="print-btn" onclick="window.print()">
+            <i data-lucide="printer" width="18"></i> Print Report
+        </button>
+    </div>
+
+</header>
+
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-header">
+                <span class="about-badge">Est. 1996 • "A" Class Registered</span>
+                <h2 class="about-title">Engineering Excellence &<br>Safety Infrastructure</h2>
+                <p class="about-subtitle">
+                    Sameer Builtaid (P) Ltd. is a premier government-licensed contractor delivering turnkey solutions in Fire Protection, Electrification, and Civil Engineering.
+                </p>
+            </div>
+
+            <div class="content-split">
+                <div class="about-details">
+                    <h3>Building with Precision & Integrity</h3>
+                    <p>
+                        Formerly known as "Sameer Brothers," our journey began in 1996 serving mass housing projects in Dwarka and Noida. In 2004, we evolved into <strong>Sameer Builtaid (P) Ltd.</strong>, expanding our technical prowess.
+                    </p>
+                    <p>
+                        Led by Directors <strong>Mr. Rizwan Khan & Mr. Irfan Khan</strong> , we operate with a fully equipped infrastructure including hydraulic testing machines and precision tools  to ensure every project meets rigorous safety standards.
+                    </p>
+                    
+                    <ul class="check-list">
+                        <li><i data-lucide="check-circle-2"></i> "A" Class Electrical License (No. 3541) </li>
+                        <li><i data-lucide="check-circle-2"></i> Fire Safety Certification </li>
+                        <li><i data-lucide="check-circle-2"></i> Civil & Sanitation Works </li>
+                        <li><i data-lucide="check-circle-2"></i> M.Tech & B.Tech Engineers </li>
+                    </ul>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="card-icon"><i data-lucide="flame"></i></div>
+                        <h4>Fire Fighting Systems</h4>
+                        <p>Hydrant systems, Sprinklers, and Automatic Fire Alarms.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="card-icon"><i data-lucide="zap"></i></div>
+                        <h4>Electrification</h4>
+                        <p>Internal and external electrical turnkey projects.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="card-icon"><i data-lucide="droplets"></i></div>
+                        <h4>Plumbing & Sanitation</h4>
+                        <p>Comprehensive water supply and sewage engineering.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="card-icon"><i data-lucide="hammer"></i></div>
+                        <h4>Civil Construction</h4>
+                        <p>Civil works for multistoried buildings, hospitals, and hotels.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+    .vision-section {
+        background-color: #002b00; /* Deep Green Brand Color */
+        color: white;
+        padding: 80px 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Background Pattern Effect */
+    .vision-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+        opacity: 0.6;
+    }
+
+    .vision-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .vm-card {
+        padding: 20px;
+    }
+
+    .vm-icon-box {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fbbf24; /* Gold accent */
+    }
+
+    .vm-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        letter-spacing: -0.01em;
+    }
+
+    .vm-text {
+        font-size: 1rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.8);
+        border-left: 3px solid #fbbf24; /* Gold accent line */
+        padding-left: 20px;
+    }
+
+    /* Divider for mobile/responsive */
+    .vm-divider {
+        display: none;
+        height: 1px;
+        background: rgba(255,255,255,0.1);
+        margin: 40px 0;
+    }
+
+    @media (max-width: 768px) {
+        .vision-container { grid-template-columns: 1fr; gap: 0; }
+        .vm-divider { display: block; }
+    }
+</style>
+
+<section class="vision-section">
+    <div class="vision-container">
+        
+        <div class="vm-card">
+            <div class="vm-icon-box">
+                <i data-lucide="crosshair" width="32" height="32"></i>
+            </div>
+            <h2 class="vm-title">Our Mission</h2>
+            <p class="vm-text">
+                To execute turnkey engineering projects with uncompromising safety standards and technical precision. We are dedicated to delivering robust Fire Fighting, Electrical, and Civil infrastructure that ensures the safety and longevity of every building we touch.
+            </p>
+        </div>
+
+        <div class="vm-divider"></div>
+
+        <div class="vm-card">
+            <div class="vm-icon-box">
+                <i data-lucide="eye" width="32" height="32"></i>
+            </div>
+            <h2 class="vm-title">Our Vision</h2>
+            <p class="vm-text">
+                To be the most trusted infrastructure partner in North India, recognized for integrity, timely delivery, and the seamless integration of modern safety technologies in residential and commercial developments.
+            </p>
+        </div>
+
+    </div>
+</section>
+    <div class="dashboard">
+        <div class="chart-card">
+            <h3 style="margin-bottom: 15px; font-family:'Outfit'; font-weight:500;">Cumulative Project Value Growth (Chronological)</h3>
+            <canvas id="growthChart"></canvas>
+        </div>
+        <div class="stats-card">
+            <div class="stat-item">
+                <label>Total Projects</label>
+                <h2 id="totalCount">0</h2>
+            </div>
+            <div style="height: 1px; background: rgba(255,255,255,0.2); margin: 20px 0;"></div>
+            <div class="stat-item">
+                <label>Total Value (Est.)</label>
+                <h2 id="totalValue">₹ 0 Cr</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <div class="input-group">
+            <input type="text" id="searchInput" placeholder="Search project, location, contact..." onkeyup="filterProjects()">
+        </div>
+        <select id="clientFilter" onchange="filterProjects()">
+            <option value="">All Client Groups</option>
+            </select>
+        <select id="statusFilter" onchange="filterProjects()">
+            <option value="">All Statuses</option>
+            <option value="Completed">Completed</option>
+            <option value="Ongoing">Ongoing / In Progress</option>
+        </select>
+        <select id="sortFilter" onchange="filterProjects()">
+            <option value="id-desc">Newest First</option>
+            <option value="id-asc">Oldest First</option>
+            <option value="val-desc">Highest Value</option>
+            <option value="val-asc">Lowest Value</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table class="projects-table">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="30%">Project Details</th>
+                    <th width="25%">Client</th>
+                    <th width="20%">Contact Person (Recommendation)</th>
+                    <th width="10%">Value</th>
+                    <th width="10%">Status</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                </tbody>
+        </table>
+        <div id="emptyState" class="empty-state" style="display: none;">
+            No projects found matching your criteria.
+        </div>
+    </div>
+<style>
+    .team-section {
+        padding: 80px 40px;
+        background: #fff;
+        border-top: 1px solid var(--border);
+    }
+
+    .team-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .team-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 15px;
+    }
+
+    .team-subtitle {
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Directors Section */
+    .directors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        max-width: 800px;
+        margin: 0 auto 60px auto;
+    }
+
+    .director-card {
+        background: linear-gradient(135deg, #004d00 0%, #003300 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 10px 30px -5px rgba(0, 77, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .director-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        transform: rotate(45deg);
+    }
+
+    .director-role {
+        display: inline-block;
+        background: rgba(255,255,255,0.2);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        backdrop-filter: blur(5px);
+    }
+
+    .director-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    /* Staff Grid */
+    .staff-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .staff-card {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        padding: 20px;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .staff-card:hover {
+        transform: translateY(-3px);
+        background: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border-color: var(--primary);
+    }
+
+    .staff-icon {
+        width: 40px;
+        height: 40px;
+        background: #e6fffa;
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .staff-info h5 {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1rem;
+        color: var(--text-main);
+        margin-bottom: 2px;
+    }
+
+    .staff-info span {
+        font-size: 0.8rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    
+    .section-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .section-divider::before, .section-divider::after {
+        content: '';
+        height: 1px;
+        background: var(--border);
+        width: 100px;
+        margin: 0 15px;
+    }
+
+    @media (max-width: 768px) {
+        .directors-grid { grid-template-columns: 1fr; }
+        .staff-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<section class="team-section">
+    <div class="team-header">
+        <h2 class="team-title">Our Leadership & Technical Team</h2>
+        <p class="team-subtitle">Driven by experienced directors and supported by a dedicated workforce of engineers, supervisors, and technical specialists.</p>
+    </div>
+
+    <div class="directors-grid">
+        <div class="director-card">
+            <img src="assets/Rizwan.png" alt="Md. Rizwan Khan" class="director-photo">
+            <span class="director-role">Director</span>
+            <div class="director-name">Md. Rizwan Khan</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">Leadership & Strategy</div>
+        </div>
+        <div class="director-card">
+            <img src="assets/Irfan.jpg" alt="Md. Irfan Khan" class="director-photo">
+            <span class="director-role">Director</span>
+            <div class="director-name">Md. Irfan Khan</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">Operations & Management</div>
+        </div>
+    </div>
+
+    <div class="section-divider">Technical Staff & Engineers</div>
+
+    <div class="staff-grid">
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="wrench"></i></div>
+            <div class="staff-info">
+                <h5>Alok Kumar Saxena</h5>
+                <span>Project Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="wrench"></i></div>
+            <div class="staff-info">
+                <h5>Sumit Prakash</h5>
+                <span>Project Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user-check"></i></div>
+            <div class="staff-info">
+                <h5>Ajeet Kumar Singh</h5>
+                <span>Project Incharge</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="zap"></i></div>
+            <div class="staff-info">
+                <h5>Girija Shankar</h5>
+                <span>Elec. Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="zap"></i></div>
+            <div class="staff-info">
+                <h5>Nazeer Ahmad</h5>
+                <span>Elec. Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="zap"></i></div>
+            <div class="staff-info">
+                <h5>Hari Om Johari</h5>
+                <span>Elec. Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="settings"></i></div>
+            <div class="staff-info">
+                <h5>Shair Ali</h5>
+                <span>Mechanical Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="settings"></i></div>
+            <div class="staff-info">
+                <h5>Jai Shankar Sharma</h5>
+                <span>Mechanical Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="settings"></i></div>
+            <div class="staff-info">
+                <h5>Zishan Ali</h5>
+                <span>Mechanical Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="settings"></i></div>
+            <div class="staff-info">
+                <h5>Ehsan Ullah Khan</h5>
+                <span>Mechanical Engineer</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="clipboard-list"></i></div>
+            <div class="staff-info">
+                <h5>D.R Shukla</h5>
+                <span>Q.S.</span>
+            </div>
+        </div>
+        
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="hard-hat"></i></div>
+            <div class="staff-info">
+                <h5>Dinesh Kumar</h5>
+                <span>Work Incharge</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="hard-hat"></i></div>
+            <div class="staff-info">
+                <h5>Sudhir Kumar</h5>
+                <span>Gen. Foreman</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="hard-hat"></i></div>
+            <div class="staff-info">
+                <h5>Lavkush Mourya</h5>
+                <span>Gen. Foreman</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="hard-hat"></i></div>
+            <div class="staff-info">
+                <h5>Ram Autar Singh</h5>
+                <span>Foreman</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Santosh Gupta</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Rajeev Kumar</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Abdul Aziz</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Naseer Ahmed</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Ashok Kumar Singh</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Lavkush Shukla</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Pawan Kumar</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Manoj Rawat</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="user"></i></div>
+            <div class="staff-info">
+                <h5>Mithlesh Kumar</h5>
+                <span>Supervisor</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="hammer"></i></div>
+            <div class="staff-info">
+                <h5>Ram Sunder Sharma</h5>
+                <span>Fitter</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="flame"></i></div>
+            <div class="staff-info">
+                <h5>Om Prakash</h5>
+                <span>Welder</span>
+            </div>
+        </div>
+        <div class="staff-card">
+            <div class="staff-icon"><i data-lucide="package"></i></div>
+            <div class="staff-info">
+                <h5>Mr. Farid</h5>
+                <span>Store Keeper</span>
+            </div>
+        </div>
+    </div>
+</section>
+    <script>
+        // --- LOGO LIBRARY ---
+        // PASTE YOUR URLS HERE.
+   // --- LOGO LIBRARY (UPDATED FOR LOCAL FOLDER) ---
+        // Make sure your folder is named "icon" and images match these filenames exactly.
+        const clientLogos = {
+            "Amrapali Group": "icon/amrapali_group.png", 
+            "Purvanchal Group": "icon/purvanchal.png",
+            "Gardenia Group": "icon/gardenia.png",
+            "Samiah International": "icon/samiah.png",
+            "Nirala Developers": "icon/nirala.png",
+            "Gaursons / Jaishnavi": "icon/gaursons.svg",
+            "CPWD / Gov": "icon/cpwd.png",
+            "Supertech": "icon/supertech.png"
+        };
+
+        // --- DATA ---
+        const projectsData = [
+            { id: 66, name: "Bharat Overseas Castle", loc: "Dubagga, Lucknow", client: "Escon Infra Realtor Pvt Ltd", val: "4.27 Cr", rawVal: 427, status: "Ongoing (20%)", contact: "Mr. Neeraj Sharma (Director)\n9811286256" },
+            { id: 65, name: "Rose County East", loc: "Ayodhya Road, Barabanki", client: "ARG Infrastructures Pvt Ltd", val: "13.48 Cr", rawVal: 1348, status: "Ongoing (20%)", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 64, name: "Green View-II", loc: "Sec-Pi, Greater Noida", client: "Green View-II SAS Ltd", val: "1.31 Cr", rawVal: 131, status: "Ongoing (25%)", contact: "Mr. Surendra Ji (Secretary)\n7710040801" },
+            { id: 63, name: "ICAI Institute", loc: "Sec-1, Noida", client: "Dee Vee Projects Ltd", val: "1.01 Cr", rawVal: 101, status: "Completed", contact: "Mr. Hitesh (Director)\n9827471104" },
+            { id: 62, name: "NBCC Heartbeat City-2", loc: "Sec-107, Noida", client: "Gaursons Infrastructure", val: "1.35 Cr", rawVal: 135, status: "Ongoing (95%)", contact: "Mr. Chintal Ji (MEP Head)\n9962980275" },
+            { id: 61, name: "NBCC Heartbeat City-2 (T-1D)", loc: "Sec-107, Noida", client: "Jaishnavi Eminence / Gaursons", val: "1.09 Cr", rawVal: 109, status: "Ongoing (40%)", contact: "Mr. Sunny Gaur (Director)\n9810277760" },
+            { id: 60, name: "NBCC Heartbeat City-1", loc: "Sec-107, Noida", client: "Asian Construction Co", val: "4.17 Cr", rawVal: 417, status: "Ongoing (25%)", contact: "Mr. Ramesh Srivastav (PM)\n9690913571" },
+            { id: 59, name: "NBCC Heartbeat City-1", loc: "Sec-107, Noida", client: "PK Builder / Asian Const.", val: "4.40 Cr", rawVal: 440, status: "Ongoing (75%)", contact: "Mr. Pawan Tyagi (Prop)\n9582222484" },
+            { id: 58, name: "Amrapali Sapphire-1", loc: "Sec-45, Noida", client: "PK Builders", val: "65.00 Lac", rawVal: 65, status: "Completed", contact: "Mr. Pawan Tyagi (Prop)\n9582222484" },
+            { id: 57, name: "Amrapali Sapphire-2", loc: "Sec-45, Noida", client: "Krishna Builders", val: "1.10 Cr", rawVal: 110, status: "Ongoing (95%)", contact: "Mr. Parveen Mittal (Prop)\n9811886707" },
+            { id: 56, name: "Amrapali Sapphire-2", loc: "Sec-45, Noida", client: "BK Enterprises / Amrapali", val: "6.50 Cr", rawVal: 650, status: "Ongoing (90%)", contact: "Mr. Bhagat Ji (Prop)\n9811886707" },
+            { id: 55, name: "Amrapali Princely Estate", loc: "Sec-76, Noida", client: "Bishan Infra Pvt Ltd", val: "49.56 Lac", rawVal: 49.56, status: "Completed", contact: "Mr. Toni Bansal (Director)\n9820083569" },
+            { id: 54, name: "Amrapali Princely Estate", loc: "Sec-76, Noida", client: "Bishan Infra Pvt Ltd", val: "35.00 Lac", rawVal: 35, status: "Ongoing (95%)", contact: "Mr. Toni Bansal (Director)\n9820083569" },
+            { id: 53, name: "Amrapali Princely Estate", loc: "Sec-76, Noida", client: "Janhavi Construction", val: "3.25 Cr", rawVal: 325, status: "Ongoing (95%)", contact: "Mr. Mritunjay Jha (Prop)\n9650376228" },
+            { id: 52, name: "NBCC Amrapali Silicon City", loc: "Sec-76, Noida", client: "Ramji Das Dhal Construction", val: "2.45 Cr", rawVal: 245, status: "Completed", contact: "Mr. Sumit Dhal (Director)\n9897638555" },
+            { id: 51, name: "Amrapali Sapphire-2", loc: "Sec-45, Noida", client: "Amrapali Sapphire Developers", val: "1.10 Cr", rawVal: 110, status: "Ongoing (70%)", contact: "Mr. Mukul Ji (Director)\n9811144716" },
+            { id: 50, name: "Amrapali Zodiac", loc: "Sec-120, Noida", client: "Amrapali Zodiac Developers", val: "1.40 Cr", rawVal: 140, status: "Ongoing (80%)", contact: "Mr. Ajay Kr Ji (Director)\n9899107062" },
+            { id: 49, name: "Amrapali Princely Estate", loc: "Sec-76, Noida", client: "Amrapali Princely Estate Dev", val: "8.00 Cr", rawVal: 800, status: "Ongoing (80%)", contact: "Mr. Subhash Ji (Director)\n9811070409" },
+            { id: 48, name: "Amrapali Silicon City", loc: "Sec-76, Noida", client: "Amrapali Silicon City Dev", val: "9.00 Cr", rawVal: 900, status: "Ongoing (80%)", contact: "Mr. Subhash Ji (Director)\n9811070409" },
+            { id: 47, name: "ESIC Dispensary", loc: "Panki, Kanpur", client: "CPWD Kanpur Central Div", val: "1.82 Cr", rawVal: 182, status: "Completed", contact: "Mr. Vinay Verma Ji (Ex Enn. CPWD)\n9838843487" },
+            { id: 46, name: "Training Centre NSI", loc: "Kanpur", client: "CPWD Kanpur Central Div", val: "2.54 Cr", rawVal: 254, status: "Completed", contact: "Mr. Vinay Verma Ji (Ex Enn. CPWD)\n9838843487" },
+            { id: 45, name: "Nirala Aspire", loc: "Greater Noida (West)", client: "Nirala India Ltd", val: "3.27 Cr", rawVal: 327, status: "Completed", contact: "Mr. Iftikhar Ji (Director)\n9810288504" },
+            { id: 44, name: "PAN Oasis", loc: "Sec-70, Noida", client: "PAN Realtors Pvt Ltd", val: "2.53 Cr", rawVal: 253, status: "Completed", contact: "Mr. Iftikhar Ji (Director)\n9810288504" },
+            { id: 43, name: "Samiah Melrose Avenue", loc: "Lucknow", client: "Samiah International", val: "23.00 Lac", rawVal: 23, status: "Completed", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 42, name: "Gardenia Grace", loc: "Vasundhara, GZB", client: "Gardenia India Ltd", val: "60.00 Lac", rawVal: 60, status: "Completed", contact: "Mr. Sanjeev Sharma (Director)\n9818187161" },
+            { id: 41, name: "Dr. Bhimrao Ambedkar Col.", loc: "Banda (U.P)", client: "Ultra Home Construction", val: "2.76 Cr", rawVal: 276, status: "Completed", contact: "Mr. Mukul Ji (Director)\n9811144716" },
+            { id: 40, name: "Gardenia Grace", loc: "Sec-62, Noida", client: "Gardenia India Ltd", val: "65.00 Lac", rawVal: 65, status: "Completed", contact: "Mr. Sanjeev Sharma (Director)\n9818187161" },
+            { id: 39, name: "Gardenia Glamour", loc: "Vasundhara, GZB", client: "Gardenia India Ltd", val: "76.00 Lac", rawVal: 76, status: "Completed", contact: "Mr. Sanjeev Sharma (Director)\n9818187161" },
+            { id: 38, name: "Amrapali Eden Park", loc: "Sec-50, Noida", client: "Amrapali Eden Park Dev", val: "3.50 Cr", rawVal: 350, status: "Completed", contact: "Mr. Iftikhar Ji (Director)\n9810288504" },
+            { id: 37, name: "Amrapali Empire", loc: "Crossing Republic, GZB", client: "Hi-tech City Developers", val: "1.40 Cr", rawVal: 140, status: "Completed", contact: "Mr. Ajay Kr Ji (Director)\n9899107062" },
+            { id: 36, name: "Gardenia Green", loc: "Vasundhara, GZB", client: "Gardenia India Ltd", val: "15.00 Lac", rawVal: 15, status: "Completed", contact: "Mr. Sanjeev Sharma (Director)\n9818187161" },
+            { id: 35, name: "Amrapali Platinum", loc: "Sec-119, Noida", client: "Ultra Home Construction", val: "9.50 Cr", rawVal: 950, status: "Ongoing (80%)", contact: "Mr. Shivpriya Ji (Director)\n9811502155" },
+            { id: 34, name: "Gardenia Square", loc: "Crossing Republic, GZB", client: "Gardenia India Ltd", val: "1.65 Cr", rawVal: 165, status: "Completed", contact: "Mr. Sanjeev Sharma (Director)\n9818187161" },
+            { id: 33, name: "Amrapali Village-II", loc: "Indirapuram", client: "Ultra Home Construction", val: "1.30 Cr", rawVal: 130, status: "Completed", contact: "Mr. Ajay Kr Ji (Director)\n9899107062" },
+            { id: 32, name: "IIT Roorkee Hostel Extn", loc: "Gr. Noida", client: "Samiah International", val: "57.00 Lac", rawVal: 57, status: "Completed", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 31, name: "Nirala Eden Park-II", loc: "Indirapuram", client: "Nirala Developers", val: "45.18 Lac", rawVal: 45.18, status: "Completed", contact: "Mr. Iftikhar Ji (Director)\n9810288504" },
+            { id: 30, name: "THDC Corporate Office", loc: "Kaushambi", client: "Samiah International", val: "45.00 Lac", rawVal: 45, status: "Completed", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 29, name: "Supertech Icon", loc: "Indirapuram", client: "Supertech Estate Dev", val: "57.00 Lac", rawVal: 57, status: "Completed", contact: "Mr. Vijay Ji (MEP Head)\n9654100129" },
+            { id: 28, name: "Amrapali Multiplex", loc: "Bareilly", client: "Ultra Home Construction", val: "47.00 Lac", rawVal: 47, status: "Completed", contact: "Mr. Sunil Rawat Ji (Head)\n9873900061" },
+            { id: 27, name: "Amrapali Manesar Hub", loc: "IMT Manesar", client: "Ultra Home Construction", val: "1.56 Cr", rawVal: 156, status: "Completed", contact: "Mr. Shivpriya Ji (Director)\n9811502155" },
+            { id: 26, name: "Amrapali Grand", loc: "Sec-Zeta-1, Gr. Noida", client: "Amrapali Grand", val: "80.00 Lac", rawVal: 80, status: "Completed", contact: "Mr. Sanjeev Ji (Director)\n9910109458" },
+            { id: 24, name: "Amrapali Awadh", loc: "Lucknow", client: "Amrapali Group", val: "27.00 Lac", rawVal: 27, status: "Completed", contact: "Mr. Ajay Kr Ji (Director)\n9899107062" },
+            { id: 23, name: "Vrinda City S.A.S.", loc: "Sec-Phi-04, Gr. Noida", client: "Samiah International", val: "1.18 Cr", rawVal: 118, status: "Completed", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 22, name: "Amrapali Royal", loc: "Vaishali, GZB", client: "Amrapali Homes", val: "82.00 Lac", rawVal: 82, status: "Completed", contact: "Mr. Subhash Ji (Director)\n9811070409" },
+            { id: 21, name: "Anand Ashray S.A.S.", loc: "Sec-Phi-02, Gr. Noida", client: "Samiah International", val: "72.00 Lac", rawVal: 72, status: "Completed", contact: "Mr. Jamil A. Khan (CMD)\n9971080786" },
+            { id: 20, name: "Amrapali Vaishali", loc: "Vaishali, GZB", client: "Skytech Construction", val: "25.62 Lac", rawVal: 25.62, status: "Completed", contact: "Mr. Chawla Ji (Director)\n9810028015" },
+            { id: 19, name: "Amrapali Green", loc: "Vaishali, GZB", client: "AHS Joint Venture", val: "1.04 Cr", rawVal: 104, status: "Completed", contact: "Mr. Sanjeev Sharma (CMD)\n9818187161" },
+            { id: 18, name: "Home Sahakari Awas", loc: "Sec-50, Noida", client: "Society", val: "12.90 Lac", rawVal: 12.9, status: "Completed", contact: "Mr. Subhash Ji\n9811070409" },
+            { id: 17, name: "Saba S.A.S.", loc: "Sec-44, Noida", client: "Purvanchal Construction", val: "5.50 Lac", rawVal: 5.5, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 16, name: "PCW Silver Estate", loc: "Sec-51, Noida", client: "Purvanchal Construction", val: "48.00 Lac", rawVal: 48, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 15, name: "New Progressive C.G.H.S.", loc: "Vasundhara Enclave", client: "Malhotra Construction", val: "18.80 Lac", rawVal: 18.8, status: "Completed", contact: "Mr. Malhotra (Prop)" },
+            { id: 14, name: "Vasant Vihar S.A.S.", loc: "Sec-62, Noida", client: "Malhotra Construction", val: "5.99 Lac", rawVal: 5.99, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 13, name: "Pancha-chulli S.A.S.", loc: "Sec-61, Noida", client: "Purvanchal Construction", val: "11.72 Lac", rawVal: 11.72, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 12, name: "Mecon Indraprastha S.A.S.", loc: "Sec-62, Noida", client: "Purvanchal Construction", val: "6.50 Lac", rawVal: 6.5, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 11, name: "Kendriya Bank S.A.S.", loc: "Sec-62, Noida", client: "Purvanchal Construction", val: "10.50 Lac", rawVal: 10.5, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 10, name: "Millennium S.A.S.", loc: "Sec-61, Noida", client: "Purvanchal Construction", val: "5.87 Lac", rawVal: 5.87, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 9, name: "Palam C.G.H.S.", loc: "Sec-5, Dwarka", client: "Society", val: "15.40 Lac", rawVal: 15.4, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 8, name: "I.T.B.P. C.G.H.S.", loc: "Sec-32, Gr. Noida", client: "ITBP Society", val: "14.55 Lac", rawVal: 14.55, status: "Completed", contact: "Mr. DIG Pandey (Secretory)" },
+            { id: 7, name: "Saketdham S.A.S.", loc: "Sec-61, Noida", client: "Purvanchal Construction", val: "27.00 Lac", rawVal: 27, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 6, name: "Bhaghirathi S.A.S.", loc: "Sec-62, Noida", client: "Society / Purvanchal", val: "24.87 Lac", rawVal: 24.87, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 5, name: "Vidyut Vihar S.A.S.", loc: "Sec-62, Noida", client: "Purvanchal Construction", val: "27.00 Lac", rawVal: 27, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 4, name: "Kailashdham S.A.S.", loc: "Sec-50, Noida", client: "Purvanchal Construction", val: "70.00 Lac", rawVal: 70, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 3, name: "Ushma Urja S.A.S.", loc: "Sec-62, Noida", client: "Society / Purvanchal", val: "22.00 Lac", rawVal: 22, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 2, name: "PM Office Emp S.A.S.", loc: "Sec-62, Noida", client: "Purvanchal Construction", val: "10.80 Lac", rawVal: 10.8, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" },
+            { id: 1, name: "Shahjahanabad C.G.H.S.", loc: "Sec-11, Dwarka", client: "Society / Purvanchal", val: "67.43 Lac", rawVal: 67.43, status: "Completed", contact: "Mr. Shah Alam (CMD)\n9810065087" }
+        ];
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            populateClients();
+            renderTable(projectsData);
+            updateStats(projectsData);
+            renderChart(projectsData);
+        });
+
+        // --- CHART LOGIC ---
+        function renderChart(data) {
+            const sorted = [...data].sort((a, b) => a.id - b.id);
+            let cumulative = 0;
+            const chartLabels = [];
+            const chartData = sorted.map(p => {
+                cumulative += p.rawVal;
+                chartLabels.push(`Proj ${p.id}`);
+                return cumulative;
+            });
+
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(0, 77, 0, 0.2)');
+            gradient.addColorStop(1, 'rgba(0, 77, 0, 0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'Cumulative Work Value (Lacs)',
+                        data: chartData,
+                        borderColor: '#004d00',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let val = context.raw;
+                                    if(val > 100) return `Total: ₹ ${(val/100).toFixed(2)} Cr`;
+                                    return `Total: ₹ ${val.toFixed(2)} Lacs`;
+                                },
+                                title: function(context) {
+                                    const index = context[0].dataIndex;
+                                    return sorted[index].name;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f0f0f0' },
+                            ticks: { callback: (val) => (val/100) + ' Cr' }
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        }
+
+        // --- HELPER: Client Normalization (Grouping) ---
+        function getClientGroup(clientRaw) {
+            const c = clientRaw.toLowerCase();
+            if(c.includes('amrapali')) return "Amrapali Group";
+            if(c.includes('purvanchal')) return "Purvanchal Group";
+            if(c.includes('gardenia')) return "Gardenia Group";
+            if(c.includes('samiah')) return "Samiah International";
+            if(c.includes('nirala')) return "Nirala Developers";
+            if(c.includes('ultra home')) return "Ultra Home Construction";
+            if(c.includes('gaursons') || c.includes('jaishnavi')) return "Gaursons / Jaishnavi";
+            if(c.includes('cpwd')) return "CPWD / Gov";
+            if(c.includes('supertech')) return "Supertech";
+            return "Others";
+        }
+
+        // --- FILTER & RENDER LOGIC ---
+        function populateClients() {
+            const select = document.getElementById('clientFilter');
+            const groups = [...new Set(projectsData.map(p => getClientGroup(p.client)))].sort();
+            
+            groups.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g;
+                opt.textContent = g;
+                select.appendChild(opt);
+            });
+        }
+
+        function filterProjects() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const clientGroup = document.getElementById('clientFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            let filtered = projectsData.filter(p => {
+                const searchMatch = p.name.toLowerCase().includes(search) 
+                                 || p.loc.toLowerCase().includes(search)
+                                 || (p.contact && p.contact.toLowerCase().includes(search));
+                                 
+                const groupMatch = clientGroup ? getClientGroup(p.client) === clientGroup : true;
+                const statusMatch = status ? (status === 'Completed' ? p.status === 'Completed' : p.status !== 'Completed') : true;
+                return searchMatch && groupMatch && statusMatch;
+            });
+
+            if (sort === 'val-desc') filtered.sort((a, b) => b.rawVal - a.rawVal);
+            else if (sort === 'val-asc') filtered.sort((a, b) => a.rawVal - b.rawVal);
+            else if (sort === 'id-asc') filtered.sort((a, b) => a.id - b.id);
+            else filtered.sort((a, b) => b.id - a.id);
+
+            renderTable(filtered);
+            updateStats(filtered);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+            emptyState.style.display = 'none';
+
+            data.forEach(p => {
+                const isCompleted = p.status === 'Completed';
+                const statusClass = isCompleted ? 'status-completed' : 'status-ongoing';
+                
+                // Format Contact Info
+                let contactHtml = '<span style="color:#aaa">-</span>';
+                if(p.contact) {
+                    const lines = p.contact.split('\n');
+                    contactHtml = `<div class="contact-info">
+                        <strong>${lines[0] || ''}</strong>
+                        ${lines[1] ? `<span class="contact-phone"><i data-lucide="phone" width="10"></i> ${lines[1]}</span>` : ''}
+                    </div>`;
+                }
+
+                // Logic for Logo
+                const clientGroup = getClientGroup(p.client);
+                const logoUrl = clientLogos[clientGroup];
+                const logoHtml = logoUrl 
+                    ? `<img src="${logoUrl}" class="client-logo" alt="${clientGroup}">` 
+                    : '';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#888;">${p.id}</td>
+                    <td>
+                        <span class="p-name">${p.name}</span>
+                        <span class="p-loc"><i data-lucide="map-pin" width="12"></i> ${p.loc}</span>
+                    </td>
+                    <td>
+                        <div class="client-cell">
+                            ${logoHtml}
+                            <div class="client-info">
+                                <span class="p-client-name">${p.client}</span>
+                                <span class="p-client-group">${clientGroup}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${contactHtml}</td>
+                    <td class="p-val">${p.val}</td>
+                    <td><span class="status-badge ${statusClass}">${p.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function updateStats(data) {
+            document.getElementById('totalCount').innerText = data.length;
+            const totalLacs = data.reduce((sum, p) => sum + p.rawVal, 0);
+            const valDisplay = totalLacs > 100 
+                ? `₹ ${(totalLacs/100).toFixed(2)} Cr` 
+                : `₹ ${totalLacs.toFixed(2)} Lacs`;
+            document.getElementById('totalValue').innerText = valDisplay;
+        }
+    </script>
+    <script>
+    // --- MERGED REVENUE DATA (2012 - 2023) ---
+    const revenueData = [
+        { year: '2012-13', val: 17.33 },
+        { year: '2013-14', val: 17.53 },
+        { year: '2014-15', val: 9.44 },
+        { year: '2015-16', val: 4.60 },
+        { year: '2016-17', val: 0.77 },
+        { year: '2017-18', val: 1.50 },
+        { year: '2018-19', val: 0.21 },
+        { year: '2019-20', val: 0.20 },
+        { year: '2020-21', val: 6.26 },
+        { year: '2021-22', val: 8.59 },
+        { year: '2022-23', val: 12.85 }
+    ];
+
+    // --- CUSTOM PLUGIN FOR DATA LABELS ---
+    const customDataLabels = {
+        id: 'customDataLabels',
+        afterDatasetsDraw(chart) {
+            const { ctx } = chart;
+            chart.data.datasets.forEach((dataset, i) => {
+                const meta = chart.getDatasetMeta(i);
+                meta.data.forEach((element, index) => {
+                    const value = dataset.data[index];
+                    
+                    ctx.save();
+                    ctx.font = 'bold 11px "Inter", sans-serif';
+                    ctx.fillStyle = '#004d00'; // Green text
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    
+                    // Draw text slightly above the point (y - 10px)
+                    // If value is very low (prevent overlap with bottom), shift up slightly more
+                    const yPos = value < 1 ? element.y - 12 : element.y - 8;
+                    
+                    ctx.fillText(`₹${value} Cr`, element.x, yPos);
+                    ctx.restore();
+                });
+            });
+        }
+    };
+
+    // --- RENDER CHART FUNCTION ---
+    function renderChart(data) {
+        const chartLabels = revenueData.map(d => d.year);
+        const chartValues = revenueData.map(d => d.val);
+
+        const ctx = document.getElementById('growthChart').getContext('2d');
+
+        // Check and destroy existing chart to prevent canvas overlay issues
+        if (window.myGrowthChart) window.myGrowthChart.destroy();
+
+        window.myGrowthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Annual Turnover (in Crores ₹)',
+                    data: chartValues,
+                    borderColor: '#004d00',        // Sameer Green Line
+                    backgroundColor: 'rgba(0, 77, 0, 0.1)', // Light Green Fill
+                    pointBackgroundColor: '#FFD700', // Gold Points
+                    pointBorderColor: '#004d00',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,                
+                    pointHoverRadius: 7,
+                    tension: 0.3,                  // Smooth curve
+                    fill: true                     // Fill area under line
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 30, right: 20, left: 10, bottom: 10 }
+                },
+                plugins: {
+                    legend: { display: false }, // Hide legend, title is sufficient
+                    tooltip: { enabled: false }, // Disable tooltip, we use permanent labels
+                    title: {
+                        display: true,
+                        text: 'Financial Growth Trajectory (2012-2023)',
+                        font: { size: 16, family: "'Outfit', sans-serif", weight: 'bold' },
+                        color: '#004d00',
+                        padding: { bottom: 20 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f0f0f0' }, // Subtle grid
+                        title: { display: true, text: 'Turnover (₹ Crores)', color: '#64748b' },
+                        ticks: { display: false } // Hide Y-axis numbers as we have labels on points
+                    },
+                    x: {
+                        grid: { display: false }, // Clean look
+                        ticks: { 
+                            font: { family: "'Inter', sans-serif", size: 11 },
+                            maxRotation: 45,
+                            minRotation: 0
+                        }
+                    }
+                }
+            },
+            plugins: [customDataLabels] // Register the custom label plugin
+        });
+    }
+
+    // --- INIT ---
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        
+        // Populate filters and tables from your existing projectsData logic
+        // (Ensure you keep the projectsData array and filter functions from the previous file)
+        populateClients();
+        renderTable(projectsData);
+        updateStats(projectsData);
+        
+        // Render the new Revenue Chart
+        renderChart(revenueData);
+    });
+</script>
+<footer class="site-footer">
+        <div class="footer-grid">
+            
+            <div class="footer-col">
+               <img src="icon/logo-footer.png" alt="Logo" style="width: 150px; opacity: 0.9; margin-bottom: 20px;">
+                <p>
+                    A premier government-licensed contractor delivering turnkey solutions in Fire Protection, Electrification, and Civil Engineering since 1996.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Registered Offices</h4>
+                <p>
+                    <strong style="color:white;">Corporate Office (Noida)</strong><br>
+                    C-3/13, Sector-71, Noida,<br>
+                    Gautam Buddha Nagar, U.P. - 201301
+                </p>
+                <p style="margin-top: 15px;">
+                    <strong style="color:white;">Head Office (Delhi)</strong><br>
+                    B-49, S-04, 2nd Floor, I.P. Extn.,<br>
+                    Joshi Colony, Delhi - 110092
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal & Compliance</h4>
+                
+                <div class="compliance-box">
+                    <span class="compliance-label">GST Registration No.</span>
+                    <div class="compliance-value">09AAICS6389P1Z7</div>
+                </div>
+
+                <div class="compliance-box">
+                    <span class="compliance-label">Permanent Account No. (PAN)</span>
+                    <div class="compliance-value">AAICS6389P</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2024 Sameer Builtaid (P) Ltd. All Rights Reserved. <br>
+            Designed for Internal Portfolio Use.
+        </div>
+    </footer>
+</body>
+</html>
